@@ -23,7 +23,7 @@ yarn dev
 
 And happy codding :)
 
-## What im using to create this bot
+## What i'm using to create this bot
 - [discord.js](https://www.npmjs.com/package/discord.js?source=post_page-----7b5fe27cb6fa----------------------)
 - [yt-search](https://www.npmjs.com/package/yt-search)
 - [ytdl-core](https://www.npmjs.com/package/ytdl-core), but you need to have [FFmpeg](https://www.ffmpeg.org/) installed
