@@ -5,6 +5,7 @@ import { commandHandler, channelHandler } from './handler'
 // TODO: multi server support
 const bot = new Client()
 
+bot.on('ready', () => bot.user?.setActivity('Muzika kala kaip tavo mamyte!', { type: 'LISTENING' }))
 bot.on('message', commandHandler)
 bot.on('voiceStateUpdate', (_, user) => channelHandler(user))
 
