@@ -43,8 +43,8 @@ export function commandHandler(message: Message) {
     }
 
 }
-
+// 888066132014149693
 export function channelHandler(user: VoiceState) {
-    user.id === '888066132014149693' && user.channel === null && songs.clear()
+    user.id === '888479235663077416' && user.channel === null && songs.clear()
 
 }

@@ -8,7 +8,7 @@ const command:Command = async function(args, message, songs) {
 
         if (channel) {
                 
-            songs.play(channel, args.join(''), (error) => message.channel.send(error === 'NOTFOUND' ? 'Pyzda seniuk tokios dainos nera' : 'Nu zinok per cia nemoku muzikos paleisti'))
+            songs.play(channel, args[0], message.channel.send)
             return
     
         }
