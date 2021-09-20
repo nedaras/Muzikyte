@@ -1,11 +1,9 @@
 import type { Message as DiscordMessage, VoiceChannel } from 'discord.js';
-
-type errors = 'NOTFOUND' | 'NOTSUPPORTED' | 'NOTURL'
 export interface Songs {
-    play: (channel: VoiceChannel, title: string, onError: (type: errors) => void) => void
-    skip: () => void
-    clear: () => void
-    stop: () => void
+    play: (channel: VoiceChannel, title: string, id: string) => void
+    skip: (id: string) => void
+    clear: (id: string) => void
+    stop: (id: string) => void
 
 }
 

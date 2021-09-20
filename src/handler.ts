@@ -13,8 +13,8 @@ const commands: Commands = {}
 fs.readdirSync(__dirname + '/commands').forEach(async (file) => commands[file.replace(/\.../, '')] = require('./commands/' + file).default)
 
 export function commandHandler(message: Message) {
-
-    if (!message.author.bot) {
+    
+    if (!message.author.bot) {    
 
         let args = message.content.split(' ')
         let command = args[0].toLocaleLowerCase()
@@ -45,6 +45,6 @@ export function commandHandler(message: Message) {
 }
 // 888066132014149693
 export function channelHandler(user: VoiceState) {
-    user.id === '888479235663077416' && user.channel === null && songs.clear()
+    user.id === '888479235663077416' && user.channel === null && songs.clear(user.guild.id)
 
 }

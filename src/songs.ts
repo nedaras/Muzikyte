@@ -2,82 +2,70 @@ import type { Songs } from './types'
 import type { VoiceConnection, VoiceChannel } from 'discord.js'
 import ytdl from 'ytdl-core'
 
-let songs: string[] = []
-let connection: VoiceConnection | null = null
-let channel: VoiceChannel | null = null
+const servers = new Map<string, Server>()
 
-// TODO: make it multi server // do it nexti, mean when u read it, i mean now, just fucking do it u shit bag
-const _songs: Songs = {
-    play: async (_channel, title, onError) => {
+class Server {
 
-        try {
+    public songs: string[]
+    private connection: VoiceConnection | null = null
 
-            if (isValidURL(title)) {
-
-                if (!ytdl.validateURL(title)) { onError('NOTSUPPORTED'); return }
-
-                await ytdl.getInfo(title)
-                
-                channel = _channel
-                !songs.length && playSong(title)
-                songs.push(title)
-                return
-
-            }
-            onError('NOTURL')
-
-        } catch {
-            onError('NOTFOUND')
-
-        }
-
-    },
-    skip: () => {
-
-        songs.shift()
-        playSong(songs[0])
-
-    },
-    clear: () => {
-
-        songs = []
-        connection = null
-        
-    },
-    stop: () => {
-        channel && channel.leave()
-
+    constructor(url: string, private channel: VoiceChannel) {
+        this.songs = [ url ]
+        this.play()
 
     }
 
-}
+    play = async () => {
 
-async function playSong(url?: string) {
-    if (!url) { channel!.leave(); return }
+        if (!this.songs[0]) return this.channel.leave()
 
-    async function play(url: string) {
-        
-        !connection && (connection = await channel!.join())
-        const stream = ytdl(url, { filter: 'audioonly' } )
+        const stream = ytdl(this.songs[0], { filter: 'audioonly' } )
 
-        connection.play(stream, { seek: 0, volume: 1 }).on('finish', () => {
-    
-            songs.shift()
-            playSong(songs[0])
-    
-        })
+        !this.connection && (this.connection = await this.channel.join())
+
+        this.connection.play(stream, { seek: 0, volume: 1 }).on('finish', this.skip)
 
     }
 
-    play(url)
+    skip = () => {
+        
+        this.songs.shift()
+        this.play()
 
+    }
+
+    stop = () => this.channel.leave()
 
 }
 
-function isValidURL(url: string) {
-    const regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/
-    return regex.test(url)
+const songs: Songs = {
+
+    play: (channel, url, id) => {
+
+        const server = servers.get(id)
+        server ? server.songs.push(url) : servers.set(id, new Server(url, channel))
+
+        console.log(servers);
+        
+
+    },
+
+    skip: (id: string) => {
+
+        const server = servers.get(id)
+        server && server.skip()
+
+    },
+
+    stop: (id: string) => {
+
+        const server = servers.get(id)
+        server && server.stop()
+
+    },
+
+    clear: (id: string) => servers.delete(id)
 
 }
 
-export default _songs
+export default songs
