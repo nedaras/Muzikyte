@@ -1,5 +1,5 @@
 import { Client } from 'discord.js'
-import { token } from './token.json'
+import { token } from './bot.json'
 import { commandHandler, channelHandler } from './handler'
 // TODO: padaryti kad butu local kanalas
 // TODO: multi server support

@@ -1,4 +1,4 @@
 /node_modules
 /build
 
-src/token.json
+src/bot.json

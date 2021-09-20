@@ -1,6 +1,7 @@
 import type { Message } from 'discord.js'
 import type { Command } from './types'
 import type { VoiceState } from 'discord.js'
+import { prefix, id } from './bot.json'
 import fs from 'fs'
 import songs from './songs'
 
@@ -21,7 +22,7 @@ export function commandHandler(message: Message) {
 
         args.shift()
 
-        if (command[0] == '-') {
+        if (command[0] === prefix) {
             command = command.substring(1)
     
             if (commands[command.toLowerCase()]) {
@@ -45,6 +46,6 @@ export function commandHandler(message: Message) {
 }
 // 888066132014149693
 export function channelHandler(user: VoiceState) {
-    user.id === '888479235663077416' && user.channel === null && songs.clear(user.guild.id)
+    user.id === id && user.channel === null && songs.clear(user.guild.id)
 
 }

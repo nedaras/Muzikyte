@@ -3,13 +3,16 @@ Muzika kala kaip tavo mamyte!
 ## Start a Server
 To start a server write
 
+Go to `src/bot_sample.json` and remove _sample from the file, so it would look like this `bot.json`. Then put your discords bots token in `token` slot,
+set the prefix you want at `prefix` slot and set your discord bots id at `id` slot 
+
 ```bash
 npm install, npm run build, npm start
 # or
 yarn install, yarn build, yarn start
 ```
 
-Then go to `src/token_sample.json` and remove _sample from the file, so it would look like this `token.json`. Then put your discords bots token in `token` slot.
+And it should be running
 
 ## Development
 
