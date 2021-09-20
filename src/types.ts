@@ -3,6 +3,7 @@ export interface Songs {
     play: (channel: VoiceChannel, title: string, id: string) => void
     skip: (id: string) => void
     clear: (id: string) => void
+    loop: (id: string) => void
     stop: (id: string) => void
 
 }

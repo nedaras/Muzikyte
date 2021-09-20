@@ -16,7 +16,7 @@ const command:Command = async function(args, message, songs) {
                     try {
                         
                         await ytdl.getInfo(args[0])
-                        return message.guild?.id && songs.play(channel, args[0], message.guild?.id)
+                        return message.guild?.id && songs.play(channel, args[0], message.guild.id)
 
                     } catch {
                         return message.channel.send('Nerastas vidosas')

@@ -8,6 +8,7 @@ class Server {
 
     public songs: string[]
     private connection: VoiceConnection | null = null
+    public looping: boolean = false
 
     constructor(url: string, private channel: VoiceChannel) {
         this.songs = [ url ]
@@ -23,7 +24,7 @@ class Server {
 
         !this.connection && (this.connection = await this.channel.join())
 
-        this.connection.play(stream, { seek: 0, volume: 1 }).on('finish', this.skip)
+        this.connection.play(stream, { seek: 0, volume: 1 }).on('finish', () => this.looping ? this.play() : this.skip())
 
     }
 
@@ -44,8 +45,6 @@ const songs: Songs = {
 
         const server = servers.get(id)
         server ? server.songs.push(url) : servers.set(id, new Server(url, channel))
-
-        console.log(servers);
         
 
     },
@@ -61,6 +60,12 @@ const songs: Songs = {
 
         const server = servers.get(id)
         server && server.stop()
+
+    },
+
+    loop: (id: string) => {
+        const server = servers.get(id)
+        server && (server.looping = !server?.looping)
 
     },
 

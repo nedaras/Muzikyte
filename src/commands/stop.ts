@@ -1,7 +1,7 @@
 import { Command } from "../types";
 
 const command:Command = async function (_, message, songs) {
-    message.guild?.id && songs.stop(message.guild?.id)
+    message.guild?.id && songs.stop(message.guild.id)
     
 }
 

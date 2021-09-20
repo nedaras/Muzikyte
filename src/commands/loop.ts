@@ -1,7 +1,8 @@
 import type { Command } from '../types'
 
-const command:Command = async function(args, message) {
-    message.channel.send('eik nx')
+const command:Command = async function(_, message, songs) {
+    message.guild?.id && songs.loop(message.guild.id)
+    
 
 }
 
