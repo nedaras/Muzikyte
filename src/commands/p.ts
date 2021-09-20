@@ -1,33 +1,38 @@
 import type { Command } from '../types'
 import ytdl from 'ytdl-core'
+import yts from 'yt-search'
 
 const command:Command = async function(args, message, songs) {
     
-    if (args.length) {
+    if (args.length && message.guild?.id) {
 
         const channel = message.member?.voice.channel
-        
-        if (channel){
 
-            if (isValidURL(args[0])) { 
+        if (channel) {
+
+            if (isValidURL(args[0])) {
 
                 if (ytdl.validateURL(args[0])) { 
 
                     try {
                         
                         await ytdl.getInfo(args[0])
-                        return message.guild?.id && songs.play(channel, args[0], message.guild.id)
+                        songs.play(channel, args[0], message.guild.id)
 
                     } catch {
-                        return message.channel.send('Nerastas vidosas')
+                        message.channel.send('Nerastas vidosas')
 
                     }
+                    return
 
                 }
                 return message.channel.send('Per cia nemoku muzikos paleisti')
 
             }
-            return message.channel.send('Dabar tik URLs prijamam')
+            
+            const video = (await yts(args.join(' '))).all[0]
+            if (video) return songs.play(channel, video.url, message.guild.id)
+            return message.channel.send('Nerastas vidosas')
 
         }
         message.channel.send('Turi buti kanale')
