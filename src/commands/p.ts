@@ -1,7 +1,10 @@
 import type { Command } from '../types'
 import ytdl from 'ytdl-core'
 import yts from 'yt-search'
+const fetch = require('node-fetch')
+import cheerio from 'cheerio'
 
+// ! it kinda stops music when yt-searching a new song!
 const command:Command = async function(args, message, songs) {
     
     if (args.length && message.guild?.id) {
@@ -26,6 +29,10 @@ const command:Command = async function(args, message, songs) {
                     return
 
                 }
+
+                const video = await getVideo(args[0])
+
+                if (video) return songs.play(channel, video.url, message.guild.id)
                 return message.channel.send('Per cia nemoku muzikos paleisti')
 
             }
@@ -38,6 +45,32 @@ const command:Command = async function(args, message, songs) {
         message.channel.send('Turi buti kanale')
 
     }
+
+}
+
+async function getVideo(url: string) {
+
+    if (url.includes('spotify')) {
+
+        try {
+
+            const request = await fetch(url)
+            const html = await request.text()
+    
+            const $ = cheerio.load(html)
+            const title = $('meta[property="og:title"]').attr('content')
+
+            if (title) {
+
+                const video = (await yts(title)).all[0]
+                if (video) return video
+
+            }
+
+        } catch {}
+
+    }
+    return null
 
 }
 
